@@ -4,7 +4,6 @@
 	 | "(" conditional ")"
 	 | "(" definition ")"
 	 | "(" procedure ")"
-	 | "(" basicoperation ")"
 
 ?conditional: "if" test expr expr -> conditional
 
@@ -21,12 +20,12 @@
 		
 // Terminais
 SYMBOL.0  : /[-!+\/*@$%^&~<>?|\\\w=]+/
-STRING    : /"[^"\\]*(\\[^\n\t\r\f][^"\\]*)*"/
+STRING.1    : /"[^"\\]*(\\[^\n\t\r\f][^"\\]*)*"/
 INT.1     : /-?\d+/
 FLOAT.2   : /-?\d+\.\d+/
 ENV		  : /abs | append | apply | begin | car | cdr | cons | eq? | expt | equal\? | length | list | list\? | map | max | min | not | null\? | number? | print | procedure\? | round | symbol\?/
+BOOLEAN.3 : /#(t|f)/
 COMPARISON_OP : /> | < | >= | <= | =/
-BOOLEAN.3 : /#t | #f/
 
 %ignore /\s+/
 %ignore /;[^\n]*/

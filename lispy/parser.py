@@ -3,12 +3,10 @@ from pathlib import Path
 
 from .runtime import Symbol
 
-
 class LispTransformer(InlineTransformer):
 	def start(self, *args):
 		if(len(args) == 1):
-			if(isinstance(args[0], (float, int))):
-				return args[0]
+			return args[0]
 		return [Symbol.BEGIN, *args]
 		
 	def value(self, *args):
@@ -24,9 +22,9 @@ class LispTransformer(InlineTransformer):
 		return ['define', asymbol, exp]
 		
 	def procedure(self, proc, *args):
-		if(str(proc) in ('+' '-', '/', '*'):
-			return [proc, args[0], args[1]]
-		return [proc, list(args)]
+		if(str(proc) in ('+', '-', '/', '*')):
+			return [self.atom(proc), args[0], args[1]]
+		return [self.atom(proc), list(args)]
 		
 	def atom(self, token):
 		try:
@@ -40,7 +38,7 @@ class LispTransformer(InlineTransformer):
 				if(str(token) == '#f'):
 					return False
 				
-				return Symbol(token)
+				return Symbol(str(token))
 
 def parse(src: str):
     """
