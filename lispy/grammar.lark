@@ -1,42 +1,32 @@
-?start : value+
-
-?value : "(" expr* ")"
+?start : expr+ -> start
 
 ?expr: atom
-	 | conditional
-	 | definition
-	 | procedure
+	 | "(" conditional ")"
+	 | "(" definition ")"
+	 | "(" procedure ")"
+	 | "(" basicoperation ")"
 
-?conditional: "if" test expr expr
+?conditional: "if" test expr expr -> conditional
 
-?test: "(" COMPARISON_OP expr expr ")"
+?test: "(" COMPARISON_OP expr expr ")" -> test
 
-?definition : "define" lisp_symbol expr
+?definition : "define" SYMBOL expr -> definition
 
-?procedure : lisp_symbol atom*
+?procedure : SYMBOL atom* -> procedure
 
-?atom: number
-	 | lisp_symbol
+?atom: (number | SYMBOL | BOOLEAN | STRING) -> atom
 	 
 ?number : INT
 		| FLOAT
 		
-?lisp_symbol: STRING
-
 // Terminais
 SYMBOL.0  : /[-!+\/*@$%^&~<>?|\\\w=]+/
 STRING    : /"[^"\\]*(\\[^\n\t\r\f][^"\\]*)*"/
 INT.1     : /-?\d+/
 FLOAT.2   : /-?\d+\.\d+/
-ENV		  : /abs | append | apply
-		  | begin | car | cdr
-		  | cons | eq? | expt
-		  | equal\? | length | list
-		  | list\? | map | max
-		  | min | not | null\?
-		  | number? | print | procedure\?
-		  | round | symbol\?/
+ENV		  : /abs | append | apply | begin | car | cdr | cons | eq? | expt | equal\? | length | list | list\? | map | max | min | not | null\? | number? | print | procedure\? | round | symbol\?/
 COMPARISON_OP : /> | < | >= | <= | =/
+BOOLEAN.3 : /#t | #f/
 
 %ignore /\s+/
 %ignore /;[^\n]*/
