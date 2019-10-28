@@ -24,7 +24,7 @@ class LispTransformer(InlineTransformer):
 					return False
 					
 				if(token.type == 'STRING'):
-					return r"{}".format(str(token)[1:-1])
+					return str(token)[1:-1]
 					
 				return Symbol(str(token))
 
