@@ -7,3 +7,6 @@ htmlcov
 private
 .coverage
 __pytest__
+_pycache
+lispy/__pycache__/
+tests/__pycache__/

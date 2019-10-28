@@ -1,13 +1,42 @@
 ?start : value+
 
-?value : SYMBOL
- 
+?value : "(" expr* ")"
+
+?expr: atom
+	 | conditional
+	 | definition
+	 | procedure
+
+?conditional: "if" test expr expr
+
+?test: "(" COMPARISON_OP expr expr ")"
+
+?definition : "define" lisp_symbol expr
+
+?procedure : lisp_symbol atom*
+
+?atom: number
+	 | lisp_symbol
+	 
+?number : INT
+		| FLOAT
+		
+?lisp_symbol: STRING
 
 // Terminais
 SYMBOL.0  : /[-!+\/*@$%^&~<>?|\\\w=]+/
 STRING    : /"[^"\\]*(\\[^\n\t\r\f][^"\\]*)*"/
 INT.1     : /-?\d+/
 FLOAT.2   : /-?\d+\.\d+/
+ENV		  : /abs | append | apply
+		  | begin | car | cdr
+		  | cons | eq? | expt
+		  | equal\? | length | list
+		  | list\? | map | max
+		  | min | not | null\?
+		  | number? | print | procedure\?
+		  | round | symbol\?/
+COMPARISON_OP : /> | < | >= | <= | =/
 
 %ignore /\s+/
 %ignore /;[^\n]*/
