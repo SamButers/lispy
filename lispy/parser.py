@@ -5,8 +5,28 @@ from .runtime import Symbol
 
 
 class LispTransformer(InlineTransformer):
-    def start(self, *args): 
-        return [Symbol.BEGIN, *args]
+	def start(self, expr): 
+		return expr
+		
+	def list(self, *expr):
+		return list(expr)
+		
+	def atom(self, token):
+		try:
+			return int(token)
+		except ValueError:
+			try:
+				return float(token)
+			except ValueError:
+				if(str(token) == '#t'):
+					return True
+				if(str(token) == '#f'):
+					return False
+					
+				if(token.type == 'STRING'):
+					return r"{}".format(str(token)[1:-1])
+					
+				return Symbol(str(token))
 
 def parse(src: str):
     """
